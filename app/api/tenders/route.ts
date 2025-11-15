@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { notifyWebhooks } from '@/lib/webhook-notifier';
 
 export async function POST(req: Request) {
   try {
@@ -12,6 +13,7 @@ export async function POST(req: Request) {
       );
     }
 
+    // 1. Persist the tender
     const tender = await prisma.tender.create({
       data: {
         problem,
@@ -20,6 +22,12 @@ export async function POST(req: Request) {
         evaluationCriteria: evaluationCriteria || [],
         submissionFormat: submissionFormat || {},
       },
+    });
+
+    // 2. Trigger background webhook notifications (fire-and-forget)
+    // We don't await this so the response returns immediately
+    notifyWebhooks(tender).catch(error => {
+      console.error('Background webhook notification failed:', error);
     });
 
     return NextResponse.json({ tender });

@@ -39,3 +39,22 @@ export async function POST(request: NextRequest) {
   }
 }
 
+export async function GET() {
+  try {
+    const webhooks = await prisma.webhook.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    return NextResponse.json({ webhooks });
+  } catch (error) {
+    console.error("Error fetching webhooks:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch webhooks" },
+      { status: 500 }
+    );
+  }
+}
+
+
