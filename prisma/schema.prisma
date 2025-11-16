@@ -23,6 +23,7 @@ model Webhook {
 
 model Tender {
   id                 String   @id @default(cuid())
+  title              String   @default("Untitled Tender")
   problem            String
   desiredOutcome     String
   constraints        String[]   // Array of strings

@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-grid p-6">
+    <div className="relative flex min-h-screen items-center justify-center bg-grid p-6">
       <Card className="flex w-full max-w-2xl flex-col items-center gap-12 border-white px-6 py-20">
         <div className="flex items-center gap-3">
           <Image

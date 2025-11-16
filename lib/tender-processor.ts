@@ -44,7 +44,7 @@ const planSchema = z.object({
       stepNumber: z.number(),
       action: z.string().describe('Description of what this step does'),
       apiCall: z.object({
-        endpoint: z.string().describe('Firecrawl API endpoint to use (https://api.firecrawl.dev/v1/x402/search)'),
+        endpoint: z.string().describe('Firecrawl API must be (https://api.firecrawl.dev/v1/x402/search)'),
         method: z.string().describe('HTTP method (POST)'),
         query: z.string().describe('The search query string to send'),
       }),

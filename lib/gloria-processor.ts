@@ -52,7 +52,7 @@ const planSchema = z.object({
       stepNumber: z.number(),
       action: z.string().describe('Description of what this step does'),
       apiCall: z.object({
-        endpoint: z.string().describe('Gloria API endpoint to use'),
+        endpoint: z.string().describe('Gloria API endpoint to use (https://api.itsgloria.ai/news, https://api.itsgloria.ai/recaps, https://api.itsgloria.ai/news-by-keyword)'),
         method: z.string().describe('HTTP method (GET)'),
         parameter: z.object({
           name: z.string().describe('Parameter name (feed_categories, feed_category, or keyword)'),

@@ -15,6 +15,7 @@ interface MCPTool {
 }
 
 interface GeneratedTender {
+  title: string;
   problem: string;
   desiredOutcome: string;
   constraints: string[];
@@ -204,6 +205,10 @@ export default function BuyersPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
+                <div className="pb-3 border-b">
+                  <h3 className="text-lg font-semibold">{generatedTender.title}</h3>
+                </div>
+
                 <div>
                   <h3 className="font-semibold text-sm mb-2">1. Problem</h3>
                   <p className="text-sm text-muted-foreground">{generatedTender.problem}</p>

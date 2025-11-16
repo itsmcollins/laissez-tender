@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { NextResponse } from 'next/server';
 
 const tenderSchema = z.object({
+  title: z.string().describe('A concise, descriptive title for the tender (5-10 words max)'),
   problem: z.string().describe('The pain point or issue that needs to be solved'),
   desiredOutcome: z.string().describe('What success looks like'),
   constraints: z.array(z.string()).describe('Limitations or requirements (budget, time, etc)'),
@@ -37,6 +38,7 @@ export async function POST(req: Request) {
 Tender request: "${tenderRequest}"
 
 Generate a structured tender with:
+- Title: A concise, descriptive title that captures the essence of the tender (5-10 words max)
 - Problem: The pain point or issue to solve
 - Desired Outcome: What success looks like
 - Constraints: Key limitations (keep to 2-3 items max)

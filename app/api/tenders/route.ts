@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { notifyWebhooks } from '@/lib/webhook-notifier';
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const { problem, desiredOutcome, constraints, evaluationCriteria, submissionFormat } = await req.json();
+    const { title, problem, desiredOutcome, constraints, evaluationCriteria, submissionFormat } = await req.json();
 
     if (!problem || !desiredOutcome) {
       return NextResponse.json(
@@ -16,6 +16,7 @@ export async function POST(req: Request) {
     // 1. Persist the tender
     const tender = await prisma.tender.create({
       data: {
+        title: title || 'Untitled Tender',
         problem,
         desiredOutcome,
         constraints: constraints || [],
@@ -40,11 +41,38 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+
+    // If ID is provided, fetch single tender
+    if (id) {
+      const tender = await prisma.tender.findUnique({
+        where: { id },
+        include: {
+          _count: {
+            select: {
+              proposals: true,
+            },
+          },
+        },
+      });
+
+      return NextResponse.json({ tenders: tender ? [tender] : [] });
+    }
+
+    // Otherwise fetch all tenders
     const tenders = await prisma.tender.findMany({
       orderBy: {
         createdAt: 'desc',
+      },
+      include: {
+        _count: {
+          select: {
+            proposals: true,
+          },
+        },
       },
     });
 
